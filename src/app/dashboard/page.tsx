@@ -75,11 +75,19 @@ export default function Home() {
       const tasksData = await tasksRes.json();
       const activitiesData = await activitiesRes.json();
 
-      const normalizedTasks = tasksData.map((task: Task) => {
-        let currentStatus = (task.status || "").toUpperCase();
+      const actualTasksArray = Array.isArray(tasksData) 
+        ? tasksData 
+        : (tasksData.data || tasksData.tasks || []);
+
+      const normalizedTasks = actualTasksArray.map((task: any) => {
+        let currentStatus = String(task.status || "").trim().toUpperCase();
         
-        if (currentStatus !== "TODO" && currentStatus !== "IN_PROGRESS" && currentStatus !== "DONE") {
-          currentStatus = task.completion ? "DONE" : "TODO";
+        if (currentStatus === "IN_PROGRESS" || currentStatus === "IN PROGRESS" || currentStatus === "INPROGRESS") {
+          currentStatus = "IN_PROGRESS";
+        } else if (currentStatus === "DONE" || task.completion === true) {
+          currentStatus = "DONE";
+        } else {
+          currentStatus = "TODO";
         }
         
         return {
@@ -89,7 +97,7 @@ export default function Home() {
       });
 
       setTasks(normalizedTasks);
-      setActivities(activitiesData);
+      setActivities(Array.isArray(activitiesData) ? activitiesData : []);
     } catch (error) {
       console.error("Dashboard synchronization failed:", error);
     } finally {
@@ -115,7 +123,7 @@ export default function Home() {
       
       const logsRes = await fetch("/api/activities");
       const logsData = await logsRes.json();
-      setActivities(logsData);
+      setActivities(Array.isArray(logsData) ? logsData : []);
 
     } catch (error) {
       console.error("Failed to relocate task stage:", error);
@@ -136,7 +144,7 @@ export default function Home() {
 
       const logsRes = await fetch("/api/activities");
       const logsData = await logsRes.json();
-      setActivities(logsData);
+      setActivities(Array.isArray(logsData) ? logsData : []);
     } catch (error) {
       console.error("Failed to delete task:", error);
       setTasks(previousTasks);
@@ -304,8 +312,7 @@ export default function Home() {
               </h3>
               <button 
                 onClick={clearActivityLog}
-                className="text-[10px] bg-slate-950 hover:bg-red-950/40 text-slate-500 hover:text-red-400 border border-slate-800 hover:border-red-900/40 px-2 py-0.5 rounded-md transition cursor-pointer"
-                title="Clear Activity Feed History"
+                className="text-[10px] bg-slate-950 hover:bg-red-950/40 text-slate-500 hover:text-red-400 border border-slate-800 hover:border-red-900/40 px-2.5 py-1 rounded-md transition cursor-pointer"
               >
                 Clear Feed
               </button>
