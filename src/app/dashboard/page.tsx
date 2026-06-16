@@ -75,10 +75,18 @@ export default function Home() {
       const tasksData = await tasksRes.json();
       const activitiesData = await activitiesRes.json();
 
-      const normalizedTasks = tasksData.map((task: Task) => ({
-        ...task,
-        status: task.status || (task.completion ? 'DONE' : 'TODO')
-      }));
+      const normalizedTasks = tasksData.map((task: Task) => {
+        let currentStatus = (task.status || "").toUpperCase();
+        
+        if (currentStatus !== "TODO" && currentStatus !== "IN_PROGRESS" && currentStatus !== "DONE") {
+          currentStatus = task.completion ? "DONE" : "TODO";
+        }
+        
+        return {
+          ...task,
+          status: currentStatus as 'TODO' | 'IN_PROGRESS' | 'DONE'
+        };
+      });
 
       setTasks(normalizedTasks);
       setActivities(activitiesData);
@@ -98,7 +106,7 @@ export default function Home() {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          status: newStatus,
+          status: newStatus.toLowerCase(),
           completion: newStatus === 'DONE'
         }),
       });
