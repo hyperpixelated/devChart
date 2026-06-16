@@ -17,6 +17,15 @@ const TaskSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    status: {
+        type: String,
+        enum: ["TODO", "IN_PROGRESS", "DONE"],
+        default: "TODO"
+    },
+    assignedTo: {
+        type: String,
+        default: "Unassigned"
+    },
     createdAt: {
         type: Date,
         default: Date.now,
