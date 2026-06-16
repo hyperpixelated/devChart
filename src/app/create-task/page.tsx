@@ -8,7 +8,7 @@ const CreateTask = () => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState("low");
+  const [priority, setPriority] = useState("Medium");
   const [assignedTo, setAssignedTo] = useState(""); 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasDeadline, setHasDeadline] = useState(true);
@@ -44,12 +44,12 @@ const CreateTask = () => {
 
       setTitle("");
       setDescription("");
-      setPriority("low");
+      setPriority("Medium");
       setAssignedTo("");
       setDeadline("");
       setHasDeadline(true);
 
-      alert("Task assigned and added to Kanban Board successfully!");
+      router.refresh();
       router.push("/dashboard");
     } catch (error) {
       console.error("Error creating task:", error);
@@ -139,9 +139,9 @@ const CreateTask = () => {
                 onChange={(event) => { setPriority(event.target.value) }}
                 className="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-teal-500 appearance-none cursor-pointer"
               >
-                <option value="low">🟢 Low Priority</option>
-                <option value="medium">🟡 Medium Priority</option>
-                <option value="high">🔴 High Priority</option>
+                <option value="Low">🟢 Low Priority</option>
+                <option value="Medium">🟡 Medium Priority</option>
+                <option value="High">🔴 High Priority</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
                 ▼
