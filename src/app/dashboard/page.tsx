@@ -106,7 +106,7 @@ export default function Home() {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
-          status: newStatus.toLowerCase(),
+          status: newStatus,
           completion: newStatus === 'DONE'
         }),
       });
@@ -140,6 +140,17 @@ export default function Home() {
     } catch (error) {
       console.error("Failed to delete task:", error);
       setTasks(previousTasks);
+    }
+  }
+
+  async function clearActivityLog() {
+    setActivities([]);
+    try {
+      await fetch("/api/activities", {
+        method: "DELETE",
+      });
+    } catch (error) {
+      console.error("Failed to clear cloud activity telemetry:", error);
     }
   }
 
@@ -287,9 +298,18 @@ export default function Home() {
           </div>
 
           <div className="w-full lg:w-[360px] bg-slate-900/40 backdrop-blur-md border border-white/10 hover:border-white/20 rounded-3xl p-4 shadow-xl lg:mt-[52px] transition duration-300 shadow-slate-950/40">
-            <h3 className="font-bold text-slate-200 text-sm flex items-center gap-2 mb-4 pb-2 border-b border-slate-800/80">
-              ⚡ Live Activity Feed
-            </h3>
+            <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-800/80">
+              <h3 className="font-bold text-slate-200 text-sm flex items-center gap-2">
+                ⚡ Live Activity Feed
+              </h3>
+              <button 
+                onClick={clearActivityLog}
+                className="text-[10px] bg-slate-950 hover:bg-red-950/40 text-slate-500 hover:text-red-400 border border-slate-800 hover:border-red-900/40 px-2 py-0.5 rounded-md transition cursor-pointer"
+                title="Clear Activity Feed History"
+              >
+                Clear Feed
+              </button>
+            </div>
             <div className="flex flex-col gap-3 max-h-[500px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-800">
               {activities.length === 0 ? (
                 <p className="text-xs text-slate-500 italic p-2 text-center">No recent logs. Deploy or move a task to generate logs!</p>
