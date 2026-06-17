@@ -43,3 +43,14 @@ To secure true real-time execution and bulletproof collaboration, the base proje
 2. Initialize and configure your local environment string:
    ```env
    MONGODB_URI=your_mongodb_connection_string
+
+---
+
+<img width="958" height="434" alt="Screenshot 2026-06-17 113036" src="https://github.com/user-attachments/assets/f62df750-8f6e-48ca-b3d6-22926b7cd17a" />
+
+<img width="1918" height="871" alt="image" src="https://github.com/user-attachments/assets/afb60fb6-11e7-49f3-aa1c-c534125e738d" />
+
+<img width="1915" height="862" alt="image" src="https://github.com/user-attachments/assets/db92e387-4cdf-4815-91f7-308a30fca7f4" />
+
+
+
